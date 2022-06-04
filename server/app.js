@@ -6,6 +6,7 @@ var cors = require('cors')
 
 dotenv.config({ path: "./config/config.env" });
 const app = express();
+app.use(express.static("./public"));
 const authRoute = require("./routes");
 
 
@@ -22,12 +23,11 @@ mongoose.set('debug', true);
 require('./model/Equation')
 
 //middleware
-app.use(express.static("./public"));
 app.use(express.json());
 app.use(cors());
 app.use(authRoute);
 app.use(httpResponse.Middleware)
 
-app.listen(3001, () => {
-  console.log("listening on port " + 3001);
+app.listen(process.env.PORT, () => {
+  console.log("listening on port " + process.env.PORT);
 });

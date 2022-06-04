@@ -7,6 +7,8 @@ const EquationSchema = mongoose.Schema({
     c:{type: Number, required:true},
     root1:{type: String},
     root2:{type: String},
+    realPart:{type:String},
+    imagPart:{type: String},
 })
 
 module.exports = mongoose.model("Equation", EquationSchema);

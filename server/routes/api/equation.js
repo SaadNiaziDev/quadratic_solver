@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
+const Equation = require("./../../model/Equation");
 const {
   OkResponse,
   BadRequestResponse,
@@ -8,7 +9,7 @@ const {
 
 router.post("/solve", (req, res, next) => {
   try {
-    let root1, root2;
+    let root1, root2, realPart, imagPart;
     let a = req.body.x2;
     let b = req.body.x;
     let c = req.body.constant;
@@ -17,28 +18,30 @@ router.post("/solve", (req, res, next) => {
     if (discriminant > 0) {
       root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
       root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
-      next(
-        new OkResponse(
-          `The roots of quadratic equation are ${root1} and ${root2}`
-        )
-      );
     } else if (discriminant == 0) {
       root1 = root2 = -b / (2 * a);
-
-      next(
-        new OkResponse(
-          `The roots of quadratic equation are ${root1} and ${root2}`
-        )
-      );
     } else {
-      let realPart = (-b / (2 * a)).toFixed(2);
-      let imagPart = (Math.sqrt(-discriminant) / (2 * a)).toFixed(2);
-      next(
-        new OkResponse(
-          `The roots of quadratic equation are ${realPart} + ${imagPart}i and ${realPart} - ${imagPart}i`
-        )
-      );
+      realPart = (-b / (2 * a)).toFixed(2);
+      imagPart = (Math.sqrt(-discriminant) / (2 * a)).toFixed(2) +"i";
     }
+    let expression = new Equation();
+    expression.a = a;
+    expression.b = b;
+    expression.c = c;
+    expression.root1 = root1;
+    expression.root2 = root2;
+    if (realPart != "undefined" && imagPart != "undefined") {
+      expression.realPart = realPart;
+      expression.imagPart = imagPart;
+    } else {
+    }
+    expression.save().then((result) => {
+      if (!result) {
+        next(new InternalServerErrorResponse("Error saving expression", 500.0));
+      } else {
+        next(new OkResponse(result));
+      }
+    });
   } catch (err) {
     next(new BadRequestResponse("Something unknown happend!"));
   }

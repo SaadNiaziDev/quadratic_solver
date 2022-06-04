@@ -13,10 +13,11 @@ const Dashboard = () => {
     if(x2.length > 0&& x.length > 0 && constant.length > 0) {
         await axios.post("http://localhost:3001/api/equation/solve",{x2,x,constant})
         .then((response) => {
+          console.log(response.data.data)
             Swal.fire({
                 icon:"success",
                 title:"Done",
-                text:  `${response.data.data}`,
+                text:  "Expression has been successfully solved and saved!",
             })
         }
         ).catch((error) => {
