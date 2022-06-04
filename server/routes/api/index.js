@@ -1,5 +1,5 @@
 var router = require('express').Router();
 
-router.use('/equation', require('./eqution'));
+router.use('/equation', require('./equation'));
 
 module.exports = router;
