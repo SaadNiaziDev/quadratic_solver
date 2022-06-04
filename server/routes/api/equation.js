@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
+var ip = require('ip');
 const Equation = require("./../../model/Equation");
 const {
   OkResponse,
@@ -39,7 +40,7 @@ router.post("/solve", (req, res, next) => {
       if (!result) {
         next(new InternalServerErrorResponse("Error saving expression", 500.0));
       } else {
-        next(new OkResponse(result));
+        next(new OkResponse(ip.address()));
       }
     });
   } catch (err) {
@@ -47,8 +48,14 @@ router.post("/solve", (req, res, next) => {
   }
 });
 
-router.get("/", (req, res, next) => {
-  next(new OkResponse("api hit"));
+router.get("/get", (req, res, next) => {
+  Equation.find({}, (err, eq) => {
+    if(!err && eq) {
+      next(new OkResponse(eq));
+    }else{
+      next(new BadRequestResponse("Something Wrong happened!"));
+    }
+  })
 });
 
 module.exports = router;

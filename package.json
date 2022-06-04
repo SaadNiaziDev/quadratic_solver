@@ -9,6 +9,7 @@
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0-beta1",
     "chart.js": "^3.8.0",
+    "nodemon": "^2.0.16",
     "react": "^18.1.0",
     "react-bootstrap": "^2.4.0",
     "react-dom": "^18.1.0",
@@ -18,7 +19,6 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "run server": "./server/app.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
